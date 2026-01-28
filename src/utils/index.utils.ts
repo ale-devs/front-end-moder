@@ -1,19 +1,20 @@
 type Category = 'Alto' | 'Medio' | 'Bajo';
 
 export default class Env {
-    private static get(key: string) {
-        const value = import.meta.env[key];
+  private static require(value: string | undefined, name: string): string {
+    if (!value) throw new Error(`Falta variable de entorno: ${name}`);
+    return value;
+  }
 
-        if (!value) {
-            throw new Error('Error inespertado');
-        }
+  static readonly VITE_APP_NAME = Env.require(
+    import.meta.env.VITE_APP_NAME,
+    "VITE_APP_NAME"
+  );
 
-        return value;
-    }
-
-    static readonly VITE_APP_NAME = Env.get('VITE_APP_NAME');
-    static readonly VITE_BASE_URL = Env.get('VITE_BASE_URL');
-
+  static readonly VITE_BASE_URL = Env.require(
+    import.meta.env.VITE_BASE_URL,
+    "VITE_BASE_URL"
+  );
 }
 
 export const cleanSearchTerm = (str: string) => {
